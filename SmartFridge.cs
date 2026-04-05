@@ -8,7 +8,7 @@ public class SmartFridge
     public event FridgeHandler OnAlert;
 
     private IsothermalCabinet cabinet;
-    private Components components;
+    private Compressor compressor;
 
     private List<Product> products;
 
