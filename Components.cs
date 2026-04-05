@@ -14,7 +14,7 @@ public class IsothermalCabinet
 }   
 
 
-public class Components
+public class Compressor
 {
    private bool isRunning { get; private set; }
    public void Start()
