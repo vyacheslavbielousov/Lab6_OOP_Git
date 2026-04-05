@@ -20,16 +20,45 @@ public class SmartFridge
         cabinet = new IsothermalCabinet();
         compressor = new Compressor();
         products = new InitialProducts;
-        currentTemperature = 4.0; // Initial temperature
+        currentTemperature = 10.0; // Initial temperature
     }
-    public void OpenFridge()
+
+    public void Work()
     {
-        cabinet.OpenDoor();
-        components.Stop();
+        Console.WriteLine("SmartFridge is working...");
+
+        // Simulate random compressor failure
+        Random random = new Random();
+        if (random.Next(0, 10) == 7)
+            throw new SmartDeviceException("Critical compressor error!");
+
+        CheckProducts();
+        RegulateTemperature();
     }
-    public void CloseFridge()
+
+    private void CheckProducts()
     {
-        cabinet.CloseDoor();
-        components.Start();
+        foreach (var product in products)
+        {
+            if (product.ExpirationDate < DateTime.Now)
+            {
+                OnAlert?.Invoke($"Product {product.Name} has expired!");
+            }
+        }
+    }
+
+    private void RegulateTemperature()
+    {
+        if (currentTemperature > targetTemperature)
+        {
+            compressor.Start();
+            currentTemperature -= 0.5; // Simulate cooling
+            OnTemperatureChanged?.Invoke($"Current temperature: {currentTemperature}°C");
+        }
+        else
+        {
+            compressor.Stop();
+            OnTemperatureChanged?.Invoke($"Current temperature: {currentTemperature}°C");
+        }
     }
 }
